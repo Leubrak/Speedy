@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedy - Sistema de Asistencia de Aprendices</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="LogoSpeedy.png.png" type="image/x-icon" />
+   
+    <style>
+        :root {
+            --primary-color: #41D0E7;
+            --primary-dark: #2596A8;
+            --accent-color: #2855A8;
+            --light-bg: #F5FCFD;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer {
+            background-color: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            color: #666;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #555;
+            border-radius: 8px;
+            margin: 0.5rem 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+        }
+        
+        .sidebar-link i {
+            margin-right: 10px;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .attendance-summary {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .stat-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(65, 208, 231, 0.25);
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .table thead {
+            background-color: var(--light-bg);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 1rem;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1.5rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-top: 0.5rem;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-container .form-control {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            color: #aaa;
+        }
+        
+        .attendance-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .btn-action {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+        
+        .input-group-text {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+            border-color: #ced4da;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="fw-bold text-primary">SPEEDY</span>
+                <span class="ms-2 fw-bold">Sistema de Asistencia</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="sidebar">
+                    <div class="logo-container">
+                        <div class="feature-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="logo-text">Asistencia</div>
+                    </div>
+                    
+                    <div class="nav flex-column">
+                        <a href="interfaz-principal.html" class="sidebar-link " data-section="Inicio">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
+                        <a href="asistencia.html" class="sidebar-link active" data-section="dashboard">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                        <a href="registroA.html" class="sidebar-link" data-section="aprendices">
+                            <i class="bi bi-person-plus"></i> Registro de Aprendices
+                        </a>
+                        <a href="tomar-asistencia.html" class="sidebar-link" data-section="asistencia">
+                            <i class="bi bi-clipboard-check"></i> Tomar Asistencia
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-9 col-md-8">
+                <div id="dashboard" class="content-section active">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                        Dashboard
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title text-muted">Total Aprendices</h5>
+                                            <h2 class="fw-bold mb-0" id="totalAprendicesCount">0</h2>
+                                        </div>
+                                        <div class="feature-icon">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title text-muted">Asistencia Hoy</h5>
+                                            <h2 class="fw-bold mb-0" id="asistenciaHoyCount">0</h2>
+                                        </div>
+                                        <div class="feature-icon">
+                                            <i class="bi bi-calendar-check"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title text-muted">Porcentaje</h5>
+                                            <h2 class="fw-bold mb-0" id="porcentajeAsistencia">0%</h2>
+                                        </div>
+                                        <div class="feature-icon">
+                                            <i class="bi bi-graph-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-8 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Tendencia de Asistencia</h5>
+                                    <div>
+                                        <select class="form-select form-select-sm" id="chartRangeSelector">
+                                            <option value="7">Última semana</option>
+                                            <option value="30" selected>Último mes</option>
+                                            <option value="90">Últimos 3 meses</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="attendanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Asistencia por Programa</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="programChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Últimos Registros de Asistencia</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Total Aprendices</th>
+                                                    <th>Asistieron</th>
+                                                    <th>Faltaron</th>
+                                                    <th>Porcentaje</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="ultimosRegistros">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="aprendices" class="content-section">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        Registro de Aprendices
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-5 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Nuevo Aprendiz</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="aprendizForm">
+                                        <div class="mb-3">
+                                            <label for="documento" class="form-label">Documento de Identidad</label>
+                                            <input type="text" class="form-control" id="documento" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre Completo</label>
+                                            <input type="text" class="form-control" id="nombre" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="telefono" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="telefono">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="programa" class="form-label">Grado</label>
+                                            <select class="form-select" id="programa" required>
+                                                <option value="" selected disabled>Seleccionar Grado</option>
+                                                <option value="Desarrollo de Software">Primero</option>
+                                                <option value="Gastronomía">Segundo</option>
+                                                <option value="Contabilidad">Tercero</option>
+                                                <option value="Electrónica">Cuarto</option>
+                                                <option value="Mecánica">Quinto</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-save"></i> Guardar Aprendiz
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Lista de Aprendices</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="search-container">
+                                        <i class="bi bi-search search-icon"></i>
+                                        <input type="text" class="form-control" id="buscarAprendiz" placeholder="Buscar por nombre, documento o programa...">
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Documento</th>
+                                                    <th>Nombre</th>
+                                                    <th>Programa</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="listaAprendices">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="asistencia" class="content-section">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-clipboard-check"></i>
+                        </div>
+                        Tomar Asistencia
+                    </h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Registro de Asistencia</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="input-group me-3">
+                                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                    <input type="date" class="form-control" id="fechaAsistencia">
+                                </div>
+                                <button class="btn btn-primary" id="guardarAsistencia">
+                                    <i class="bi bi-save"></i> Guardar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="search-container">
+                                <i class="bi bi-search search-icon"></i>
+                                <input type="text" class="form-control" id="buscarAsistencia" placeholder="Buscar aprendiz...">
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Documento</th>
+                                            <th width="25%">Aprendiz</th>
+                                            <th width="20%">Programa</th>
+                                            <th width="15%">Asistencia</th>
+                                            <th width="30%">Observación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="listaAsistencia">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Acciones Rápidas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <button class="btn btn-outline-primary w-100" id="marcarTodos">
+                                        <i class="bi bi-check-all"></i> Marcar Todos
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <button class="btn btn-outline-secondary w-100" id="desmarcarTodos">
+                                        <i class="bi bi-x-lg"></i> Desmarcar Todos
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <button class="btn btn-outline-info w-100" id="exportarExcel">
+                                        <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <button class="btn btn-outline-danger w-100" id="cancelarRegistro">
+                                        <i class="bi bi-trash"></i> Cancelar Registro
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="historial" class="content-section">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-calendar-week"></i>
+                        </div>
+                        Historial de Asistencia
+                    </h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Filtros</h5>
+                            <button class="btn btn-primary btn-sm" id="aplicarFiltros">
+                                <i class="bi bi-filter"></i> Aplicar Filtros
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                                    <input type="date" class="form-control" id="fechaInicio">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="fechaFin" class="form-label">Fecha Fin</label>
+                                    <input type="date" class="form-control" id="fechaFin">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="filtroPrograma" class="form-label">Programa</label>
+                                    <select class="form-select" id="filtroPrograma">
+                                        <option value="">Todos</option>
+                                        <option value="Desarrollo de Software">Desarrollo de Software</option>
+                                        <option value="Gastronomía">Gastronomía</option>
+                                        <option value="Contabilidad">Contabilidad</option>
+                                        <option value="Electrónica">Electrónica</option>
+                                        <option value="Mecánica">Mecánica</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="filtroAsistencia" class="form-label">Asistencia</label>
+                                    <select class="form-select" id="filtroAsistencia">
+                                        <option value="">Todos</option>
+                                        <option value="presentes">Presentes</option>
+                                        <option value="ausentes">Ausentes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Registros de Asistencia</h5>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2" id="exportarHistorial">
+                                    <i class="bi bi-file-earmark-excel"></i> Exportar
+                                </button>
+                                <button class="btn btn-outline-info btn-sm" id="imprimirHistorial">
+                                    <i class="bi bi-printer"></i> Imprimir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Total Aprendices</th>
+                                            <th>Asistieron</th>
+                                            <th>Faltaron</th>
+                                            <th>Porcentaje</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historialAsistencia">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reportes Section -->
+                <div id="reportes" class="content-section">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-bar-chart"></i>
+                        </div>
+                        Reportes y Estadísticas
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Asistencia por Programa</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="programaChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Tendencia Mensual</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="tendenciaChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Aprendices con Mayor Asistencia</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Documento</th>
+                                            <th>Nombre</th>
+                                            <th>Programa</th>
+                                            <th>Días Asistidos</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
+                                    </thead>

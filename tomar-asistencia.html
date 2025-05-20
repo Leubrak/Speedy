@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedy - Sistema de Asistencia de Aprendices</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="LogoSpeedy.png.png" type="image/x-icon" />
+   
+    <style>
+        :root {
+            --primary-color: #41D0E7;
+            --primary-dark: #2596A8;
+            --accent-color: #2855A8;
+            --light-bg: #F5FCFD;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer {
+            background-color: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            color: #666;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #555;
+            border-radius: 8px;
+            margin: 0.5rem 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+        }
+        
+        .sidebar-link i {
+            margin-right: 10px;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .attendance-summary {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .stat-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(65, 208, 231, 0.25);
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .table thead {
+            background-color: var(--light-bg);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 1rem;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1.5rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-top: 0.5rem;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-container .form-control {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            color: #aaa;
+        }
+        
+        .attendance-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .btn-action {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+        
+        .input-group-text {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+            border-color: #ced4da;
+        }
+
+        .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #2596A8; /* var(--primary-dark) */
+}
+
+.table-responsive {
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background-color: #f8f9fa; 
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.form-select {
+    min-width: 150px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+}
+
+.btn-primary {
+    background-color: #41D0E7;
+    border-color: #41D0E7;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2596A8;
+    border-color: #2596A8;
+}
+
+    </style>
+</head>
+<body>
+        <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="fw-bold text-primary">SPEEDY</span>
+                <span class="ms-2 fw-bold">Sistema de Asistencia</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="sidebar">
+                    <div class="logo-container">
+                        <div class="feature-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="logo-text">Asistencia</div>
+                    </div>
+                    
+                    <div class="nav flex-column">
+                        <a href="interfaz-principal.html" class="sidebar-link " data-section="Inicio">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
+                        <a href="asistencia.html" class="sidebar-link " data-section="dashboard">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                        <a href="registroA.html" class="sidebar-link" data-section="aprendices">
+                            <i class="bi bi-person-plus"></i> Registro de Aprendices
+                        </a>
+                        <a href="tomar-asistencia.html" class="sidebar-link active" data-section="asistencia">
+                            <i class="bi bi-clipboard-check"></i> Tomar Asistencia
+                        </a>
+
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="col-lg-9 col-md-8">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-clipboard2-check"></i>
+                        </div>
+                        Tomar Asistencia
+                    </h3>
+    <div class="card">
+        <div class="card-body">
+            <form id="asistenciaForm">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Asistencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Juan Pérez</td>
+                                <td>
+                                    <select class="form-select" name="juan">
+                                        <option value="presente">Presente</option>
+                                        <option value="ausente">Ausente</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>María López</td>
+                                <td>
+                                    <select class="form-select" name="maria">
+                                        <option value="presente">Presente</option>
+                                        <option value="ausente">Ausente</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Carlos Ramírez</td>
+                                <td>
+                                    <select class="form-select" name="carlos">
+                                        <option value="presente">Presente</option>
+                                        <option value="ausente">Ausente</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Guardar Asistencia</button>
+            </form>
+        </div>
+    </div>
+</div>
+ 
+
+<script>
+    document.getElementById('asistenciaForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert("Asistencia guardada correctamente ✅");
+    });
+</script>
+
+</body>

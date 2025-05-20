@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Consumo y Calidad de Alimentos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="LogoSpeedy.png.png" type="image/x-icon" />
+    
+    <style>
+        :root {
+            --primary-color: #41D0E7;
+            --primary-dark: #2596A8;
+            --accent-color: #2855A8;
+            --light-bg: #F5FCFD;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-color: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer {
+            background-color: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            color: #666;
+        }
+        
+        .stat-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        img {
+            width: 50%;
+            height: 100%;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 15px;
+            color: #555;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: var(--light-bg);
+            color: var(--primary-dark);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="ms-2 fw-bold">SPEEDY</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="tabs mb-4">
+            <div class="tab active" onclick="showTab('reportes')">
+                <i class="bi bi-file-earmark-text"></i> Reportes de Consumo
+            </div>
+            <div class="tab" onclick="showTab('calidad')">
+                <i class="bi bi-check-circle"></i> Revisión de Calidad
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="reportes">
+                <h2 class="fw-bold mb-4">Generar Reportes de Consumo</h2>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Reporte:</label>
+                            <select class="form-select">
+                                <option>Mensual</option>
+                                <option>Anual</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">Seleccionar Período:</label>
+                            <input type="month" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button class="btn btn-primary">
+                            <i class="bi bi-file-earmark-arrow-down"></i> Generar Reporte
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Usuario</th>
+                                    <th>Alimentos Consumidos</th>
+                                    <th>Categoría</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-04-01</td>
+                                    <td>Usuario 1</td>
+                                    <td>25</td>
+                                    <td>Frutas</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="calidad" class="hidden">
+                <h2 class="fw-bold mb-4">Revisión de Calidad de Alimentos</h2>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h3 class="card-title">Tomates</h3>
+                                    <div class="feature-icon">
+                                        <i class="bi bi-basket"></i>
+                                    </div>
+                                </div>
+                                <p class="card-text">Recibido: 2025-04-20</p>
+                                <p class="card-text">Cantidad: 50 kg</p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-check-circle"></i> Aceptar
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="reportarProblema('Tomates')">
+                                        <i class="bi bi-exclamation-triangle"></i> Reportar Problema
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h3 class="card-title">Manzanas</h3>
+                                    <div class="feature-icon">
+                                        <i class="bi bi-apple"></i>
+                                    </div>
+                                </div>
+                                <p class="card-text">Recibido: 2025-04-20</p>
+                                <p class="card-text">Cantidad: 30 kg</p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-check-circle"></i> Aceptar
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="reportarProblema('Manzanas')">
+                                        <i class="bi bi-exclamation-triangle"></i> Reportar Problema
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2025 Speedy School Restaurant.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-decoration-none me-3 text-muted"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-decoration-none me-3 text-muted"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-decoration-none text-muted"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showTab(tabName) {
+            document.getElementById('reportes').classList.add('hidden');
+            document.getElementById('calidad').classList.add('hidden');
+            document.getElementById(tabName).classList.remove('hidden');
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            if (tabName === 'reportes') {
+                tabs[0].classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+            }
+        }
+
+        function reportarProblema(alimento) {
+            const comentario = prompt(`Describe el problema encontrado con ${alimento}:`);
+            if (comentario) {
+                alert(`Problema reportado para ${alimento}: "${comentario}"`);
+            }
+        }
+    </script>
+</body>
+</html>

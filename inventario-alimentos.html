@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventario de Alimentos</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #41D0E7;
+      --primary-dark: #2596A8;
+      --accent-color: #2855A8;
+      --light-bg: #F5FCFD;
+    }
+    body {
+      background-color: var(--light-bg);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .navbar-brand img {
+      height: 40px;
+    }
+    .nav-link {
+      color: #ffffff;
+      font-weight: 500;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary-dark);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-color: var(--primary-color);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .table thead {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#"><span class="ms-2 fw-bold">SPEEDY</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <h2 class="mb-4 fw-bold" style="color: var(--accent-color);">Registro de Inventario de Alimentos</h2>
+
+  
+  <form id="inventarioForm" class="card p-4 mb-5">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Nombre del Producto</label>
+        <input type="text" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Proveedor</label>
+        <input type="text" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" required>
+          <option>Frutas</option>
+          <option>Verduras</option>
+          <option>Cárnicos</option>
+          <option>Lácteos</option>
+          <option>Granos</option>
+          <option>Conservas</option>
+          <option>Bebidas</option>
+          <option>Congelados</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Cantidad</label>
+        <input type="number" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Unidad de Medida</label>
+        <select class="form-select" required>
+          <option>Kilogramos (Kg)</option>
+          <option>Gramos (g)</option>
+          <option>Litros (L)</option>
+          <option>Mililitros (mL)</option>
+          <option>Unidades</option>
+          <option>Cajas</option>
+          <option>Paquetes</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Fecha de Recepción</label>
+        <input type="date" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Fecha de Caducidad</label>
+        <input type="date" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Número de Lote</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Defectos</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Inspector</label>
+        <input type="text" class="form-control" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Comentarios Adicionales</label>
+        <textarea class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Subir Archivos</label>
+        <input type="file" class="form-control">
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">Guardar Registro</button>
+    </div>
+  </form>
+
+  <h3 class="mb-3 fw-bold">Registros Guardados</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Proveedor</th>
+          <th>Categoría</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+          <th>Recepción</th>
+          <th>Caducidad</th>
+          <th>Inspector</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaRegistros">
+        <!-- Registros dinámicos aquí -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('inventarioForm');
+  const tabla = document.getElementById('tablaRegistros');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const datos = Array.from(form.querySelectorAll('input, select, textarea')).map(el => el.value);
+    const fila = document.createElement('tr');
+    fila.innerHTML = `
+      <td>${datos[0]}</td>
+      <td>${datos[1]}</td>
+      <td>${datos[2]}</td>
+      <td>${datos[3]}</td>
+      <td>${datos[4]}</td>
+      <td>${datos[5]}</td>
+      <td>${datos[6]}</td>
+      <td>${datos[10]}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()">Eliminar</button></td>
+    `;
+    tabla.appendChild(fila);
+    form.reset();
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

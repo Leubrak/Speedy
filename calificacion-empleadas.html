@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPEEDY-istema de Evaluación de Empleadas</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css" rel="stylesheet">
+  <link rel="icon" href="LogoSpeedy.png.png" type="image/x-icon" />
+  <style>
+    :root {
+      --primary-color: #41D0E7;
+      --primary-dark: #2596A8;
+      --accent-color: #2855A8;
+      --light-bg: #F5FCFD;
+      --text-dark: #333333;
+      --text-light: #ffffff;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      font-family: 'Segoe UI', sans-serif;
+      padding-bottom: 2rem;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      color: var(--text-light);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      height: 40px;
+    }
+        
+    .nav-link {
+        color: #ffffff;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+        
+    .nav-link:hover, .nav-link.active {
+        color: var(--primary-dark);
+    }
+
+    .sidebar {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-link i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      background-color: var(--light-bg);
+      color: var(--primary-dark);
+      transform: translateX(5px);
+    }
+
+    .star-rating {
+      display: flex;
+      align-items: center;
+    }
+
+    .star-rating i {
+      font-size: 1.7rem;
+      cursor: pointer;
+      color: #ccc;
+      transition: all 0.2s ease;
+      margin-right: 5px;
+    }
+
+    .star-rating i:hover {
+      transform: scale(1.2);
+    }
+
+    .star-rating i.checked {
+      color: gold;
+    }
+
+    .section-title {
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    .empleada-foto {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary-color);
+      transition: all 0.3s ease;
+    }
+
+    .empleada-foto:hover {
+      transform: scale(1.05);
+      border-color: var(--accent-color);
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 5px;
+    }
+
+    .progress-bar {
+      background-color: var(--primary-color);
+    }
+
+    .rating-value {
+      font-size: 0.9rem;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-color: var(--primary-color);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .tab-content {
+      padding: 1rem 0;
+    }
+
+    .employee-selector {
+      transition: all 0.3s ease;
+    }
+
+    .employee-selector:hover {
+      background-color: var(--light-bg);
+    }
+    
+    .employee-selector.active {
+      background-color: var(--light-bg);
+      border-left: 3px solid var(--primary-color);
+    }
+    
+    #historicChart {
+      max-height: 300px;
+    }
+    
+    .badge-role {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      color: white;
+      font-weight: normal;
+      padding: 5px 10px;
+      border-radius: 20px;
+    }
+    
+    .comment-box {
+      resize: none;
+      border-radius: 8px;
+    }
+    
+    .rating-category {
+      transition: all 0.3s ease;
+    }
+    
+    .rating-category:hover {
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding-left: 5px;
+    }
+    
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+  </style>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+       SPEEDY 
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                    </li>
+                </ul>
+            </div>
+  </div>
+</nav>
+
+<div class="container-fluid py-4">
+  <div class="row g-4">
+
+    <div class="col-lg-3">
+      <div class="sidebar mb-4">
+        <h5 class="mb-3"><i class="bi bi-person-circle"></i> Seleccionar Empleada</h5>
+        
+        <div class="list-group mb-4">
+          <a href="#" class="list-group-item list-group-item-action employee-selector active" data-id="001" data-name="Lucía Ramírez" data-role="Cocinera">
+            <div class="d-flex align-items-center">
+              <img src="/api/placeholder/50/50" alt="Lucía" class="rounded-circle me-2" width="40" height="40">
+              <div>
+                <h6 class="mb-0">Lucía Ramírez</h6>
+                <small class="text-muted">Cocinera</small>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action employee-selector" data-id="002" data-name="María López" data-role="Cocinera">
+            <div class="d-flex align-items-center">
+              <img src="/api/placeholder/50/50" alt="María" class="rounded-circle me-2" width="40" height="40">
+              <div>
+                <h6 class="mb-0">María López</h6>
+                <small class="text-muted">Cocinera</small>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action employee-selector" data-id="003" data-name="Carmen Díaz" data-role="Cocinera">
+            <div class="d-flex align-items-center">
+              <img src="/api/placeholder/50/50" alt="Carmen" class="rounded-circle me-2" width="40" height="40">
+              <div>
+                <h6 class="mb-0">Carmen Díaz</h6>
+                <small class="text-muted">Cocinera</small>
+              </div>
+            </div>
+          </a>
+        </div>
+        
+        <h5 class="mb-3"><i class="bi bi-card-list"></i> Navegación</h5>
+        <a href="#evaluacionTab" class="sidebar-link active" data-bs-toggle="tab">
+          <i class="bi bi-star"></i> Calificar Empleada
+        </a>
+        <a href="interfaz-principal.html" class="sidebar-link">
+  <i class="bi bi-house-door"></i> Inicio
+</a>
+
+    
+       
+      </div>
+    </div>
+
+
+    <div class="col-lg-9">
+      <div class="tab-content">
+
+        <div class="tab-pane fade show active" id="evaluacionTab">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h4 class="section-title mb-0">
+              <i class="bi bi-star-half"></i> Evaluar Empleada
+            </h4>
+            <div class="badge bg-primary p-2">
+              <i class="bi bi-calendar3"></i> <span id="currentDate"></span>
+            </div>
+          </div>
+
+
+          <div class="card p-4 mb-4 fade-in">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <div class="position-relative">
+                  <img src="/api/placeholder/100/100" id="empleadaFoto" alt="Foto de la empleada" class="empleada-foto">
+                  <label for="inputFoto" class="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow-sm" style="cursor: pointer;">
+                    <i class="bi bi-camera-fill text-primary"></i>
+                    <input type="file" class="d-none" id="inputFoto" accept="image/*">
+                  </label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="d-flex align-items-center mb-2">
+                  <h5 class="mb-0" id="nombreEmpleada">Lucía Ramírez</h5>
+                  <span class="badge-role ms-3" id="rolEmpleada">Cocinera</span>
+                </div>
+                <p class="text-muted mb-0">ID: <span id="idEmpleada">001</span></p>
+                <div class="mt-2">
+                  <span class="badge bg-light text-dark me-1">
+                    <i class="bi bi-clock"></i> Turno: Matutino
+                  </span>
+                  <span class="badge bg-light text-dark">
+                    <i class="bi bi-calendar3"></i> Antigüedad: 1 año
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card p-4 mb-4 fade-in" style="animation-delay: 0.2s;">
+            <form id="formCalificacion">
+              <div class="mb-4 rating-category p-2">
+                <label class="fw-bold">Limpieza:</label>
+                <div class="d-flex align-items-center">
+                  <div class="star-rating" data-category="limpieza">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                  </div>
+                  <span class="rating-value ms-2" id="limpiezaValue">0/5</span>
+                </div>
+                <small class="text-muted">Evalúa la presentación personal y limpieza de su área de trabajo</small>
+              </div>
+
+              <div class="mb-4 rating-category p-2">
+                <label class="fw-bold">Atención al Cliente:</label>
+                <div class="d-flex align-items-center">
+                  <div class="star-rating" data-category="atencion">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                  </div>
+                  <span class="rating-value ms-2" id="atencionValue">0/5</span>
+                </div>
+                <small class="text-muted">Evalúa la amabilidad, rapidez y calidad de atención.</small>
+              </div>
+
+              <div class="mb-4 rating-category p-2">
+                <label class="fw-bold">Desempeño:</label>
+                <div class="d-flex align-items-center">
+                  <div class="star-rating" data-category="desempeno">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                  </div>
+                  <span class="rating-value ms-2" id="desempenoValue">0/5</span>
+                </div>
+                <small class="text-muted">Evalúa la eficiencia, conocimiento y resultados en sus tareas</small>
+              </div>
+
+              <div class="mb-4 rating-category p-2">
+                <label class="fw-bold">Trabajo en Equipo:</label>
+                <div class="d-flex align-items-center">
+                  <div class="star-rating" data-category="equipo">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                  </div>
+                  <span class="rating-value ms-2" id="equipoValue">0/5</span>
+                </div>
+                <small class="text-muted">Evalúa la colaboración y relación con sus compañeros</small>
+              </div>
+
+              <div class="mb-4">
+                <label class="fw-bold mb-2">Comentarios:</label>
+                <textarea class="form-control comment-box" rows="3" placeholder="Escribe tus observaciones aquí (opcional)" id="comentarios"></textarea>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-outline-secondary" id="btnLimpiarForm">
+                  <i class="bi bi-eraser"></i> Limpiar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-save"></i> Guardar Calificación
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="resultadosTab">
+          <h4 class="section-title mb-4"><i class="bi bi-graph-up"></i> Resultados de Desempeño</h4>
+          
+
+          <div class="card p-4 mb-4">
+            <div class="d-flex align-items-center mb-4">
+              <img src="/api/placeholder/80/80" id="resultadosFoto" alt="Foto de la empleada" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--primary-color)">
+              <div>
+                <h5 class="mb-1" id="resultadosNombre">Lucía Ramírez</h5>
+                <p class="text-muted mb-0">ID: <span id="resultadosId">001</span> | <span id="resultadosRol">Cajera</span></p>
+              </div>
+            </div>
+            
+            <div class="resultados-container">
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="fw-bold">Limpieza:</label>
+                  <span id="pctLimpieza" class="badge bg-primary">0%</span>
+                </div>
+                <div class="progress mb-1">
+                  <div class="progress-bar" id="barLimpieza" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted" id="evalLimpieza">0 evaluaciones</small>
+              </div>
+              
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="fw-bold">Atención al Cliente:</label>
+                  <span id="pctAtencion" class="badge bg-primary">0%</span>
+                </div>
+                <div class="progress mb-1">
+                  <div class="progress-bar" id="barAtencion" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted" id="evalAtencion">0 evaluaciones</small>
+              </div>
+              
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="fw-bold">Desempeño:</label>
+                  <span id="pctDesempeno" class="badge bg-primary">0%</span>
+                </div>
+                <div class="progress mb-1">
+                  <div class="progress-bar" id="barDesempeno" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted" id="evalDesempeno">0 evaluaciones</small>
+              </div>
+              
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="fw-bold">Trabajo en Equipo:</label>
+                  <span id="pctEquipo" class="badge bg-primary">0%</span>
+                </div>
+                <div class="progress mb-1">
+                  <div class="progress-bar" id="barEquipo" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted" id="evalEquipo">0 evaluaciones</small>
+              </div>
+              
+              <div class="mt-4 pt-3 border-top">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold">Calificación General:</h6>
+                  <span id="pctGeneral" class="badge bg-success">0%</span>
+                </div>
+                <div class="progress" style="height: 15px;">
+                  <div class="progress-bar bg-success" id="barGeneral" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="card p-4">
+            <h5 class="mb-3"><i class="bi bi-chat-left-text"></i> Comentarios Recientes</h5>
+            <div id="comentariosContainer" class="mb-3">
+              <div class="alert alert-light">
+                No hay comentarios registrados aún.
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-outline-primary" id="btnExportar">
+                <i class="bi bi-file-earmark-arrow-down"></i> Exportar Resultados
+              </button>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="tab-pane fade" id="historicoTab">
+          <h4 class="section-title mb-4"><i class="bi bi-calendar-check"></i> Histórico de Evaluaciones</h4>
+          
+          <div class="card p-4 mb-4">
+            <h5 class="mb-3">Evolución de Desempeño</h5>
+            <div>
+              <canvas id="historicChart"></canvas>
+            </div>
+          </div>
+          
+          <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Registro de Evaluaciones</h5>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownPeriodo" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-calendar3"></i> Periodo
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownPeriodo">
+                  <li><a class="dropdown-item" href="#">Último mes</a></li>
+                  <li><a class="dropdown-item" href="#">Último trimestre</a></li>
+                  <li><a class="dropdown-item" href="#">Último año</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Todas las evaluaciones</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Limpieza</th>
+                    <th>Atención</th>
+                    <th>Desempeño</th>
+                    <th>Equipo</th>
+                    <th>Promedio</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaHistorico">
+                  <tr>
+                    <td colspan="6" class="text-center">No hay evaluaciones registradas</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+<script>
+
+  const empleados = {
+    "001": {
+      nombre: "Lucía Ramírez",
+      rol: "Cajera",
+      calificaciones: {
+        limpieza: [],
+        atencion: [],
+        desempeno: [],
+        equipo: []
+      },
+      comentarios: []
+    },
+    "002": {
+      nombre: "María López",
+      rol: "Mesera",
+      calificaciones: {
+        limpieza: [],
+        atencion: [],
+        desempeno: [],
+        equipo: []
+      },
+      comentarios: []
+    },
+    "003": {
+      nombre: "Carmen Díaz",
+      rol: "Cocinera",
+      calificaciones: {
+        limpieza: [],
+        atencion: [],
+        desempeno: [],
+        equipo: []
+      },
+      comentarios: []
+    }
+  };
+  
+  let empleadoActual = "001";
+  let chart = null;
+  
+
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+
+  document.querySelectorAll('.star-rating').forEach(group => {
+    const category = group.getAttribute('data-category');
+    const valueSpan = document.getElementById(`${category}Value`);
+    
+    group.addEventListener('click', (e) => {
+      if (!e.target.dataset.value) return;
+      
+      const rating = parseInt(e.target.dataset.value);
+      group.querySelectorAll('i').forEach((star, idx) => {
+        star.classList.toggle('checked', idx < rating);
+
+        if (idx < rating) {
+          star.classList.remove('bi-star');
+          star.classList.add('bi-star-fill');
+        } else {
+          star.classList.remove('bi-star-fill');
+          star.classList.add('bi-star');
+        }
+      });
+      
+      group.setAttribute('data-selected', rating);
+      valueSpan.textContent = `${rating}/5`;
+    });
+    
+
+    group.querySelectorAll('i').forEach((star, idx) => {
+      star.addEventListener('mouseenter', () => {
+        const rating = parseInt(star.dataset.value);
+        group.querySelectorAll('i').forEach((s, i) => {
+          if (i < rating) {
+            s.classList.add('bi-star-fill');
+            s.classList.remove('bi-star');
+          } else {
+            s.classList.remove('bi-star-fill');
+            s.classList.add('bi-star');
+          }
+        });
+      });
+      
+      group.addEventListener('mouseleave', () => {
+        const selected = parseInt(group.getAttribute('data-selected') || 0);
+        group.querySelectorAll('i').forEach((s, i) => {
+          if (i < selected) {
+            s.classList.add('bi-star-fill');
+            s.classList.remove('bi-star');
+          } else {
+            s.classList.remove('bi-star-fill');
+            s.classList.add('bi-star');
+          }
+        });
+      });
+    });
+  });
+  
+
+  document.getElementById('btnLimpiarForm').addEventListener('click', function() {
+    document.querySelectorAll('.star-rating').forEach(group => {
+      group.querySelectorAll('i').forEach(star => {
+        star.classList.remove('checked', 'bi-star-fill');
+        star.classList.add('bi-star');
+      });
+      group.removeAttribute('data-selected');
+      
+      const category = group.getAttribute('data-category');
+      document.getElementById(`${category}Value`).textContent = '0/5';
+    });
+    
+    document.getElementById('comentarios').value = '';
+  });
+  
+
+  document.getElementById('formCalificacion').addEventListener('submit', function(e) {
+    e.preventDefault();
+  });
+    let tieneCalificacion = false;
+    
+    ['limpieza', 'atencion', 'desempeno', 'equipo'].forEach(cat => {
+      const starGroup = document.
+    });
+</script>

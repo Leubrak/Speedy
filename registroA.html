@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speedy - Sistema de Asistencia de Aprendices</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="LogoSpeedy.png.png" type="image/x-icon" />
+   
+    <style>
+        :root {
+            --primary-color: #41D0E7;
+            --primary-dark: #2596A8;
+            --accent-color: #2855A8;
+            --light-bg: #F5FCFD;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer {
+            background-color: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            color: #666;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 80px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #555;
+            border-radius: 8px;
+            margin: 0.5rem 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+        }
+        
+        .sidebar-link i {
+            margin-right: 10px;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .attendance-summary {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .stat-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(65, 208, 231, 0.25);
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .table thead {
+            background-color: var(--light-bg);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 1rem;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1.5rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-top: 0.5rem;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-container .form-control {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            color: #aaa;
+        }
+        
+        .attendance-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .btn-action {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+        
+        .input-group-text {
+            background-color: var(--light-bg);
+            color: var(--primary-dark);
+            border-color: #ced4da;
+        }
+
+        .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #2596A8; 
+}
+
+.table-responsive {
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background-color: #f8f9fa; 
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.form-select {
+    min-width: 150px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-color: #41D0E7;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2596A8;
+    border-color: #2596A8;
+}
+
+    </style>
+</head>
+<body>
+        <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="fw-bold text-primary">SPEEDY</span>
+                <span class="ms-2 fw-bold">Sistema de Asistencia</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="interfaz-principal.html"><i class="bi bi-house-door"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil-usuario.html"><i class="bi bi-person-circle"></i> Perfil</a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="sidebar">
+                    <div class="logo-container">
+                        <div class="feature-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="logo-text">Asistencia</div>
+                    </div>
+                    
+                    <div class="nav flex-column">
+                        <a href="interfaz-principal.html" class="sidebar-link " data-section="Inicio">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
+                        <a href="asistencia.html" class="sidebar-link " data-section="dashboard">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                        <a href="registroA.html" class="sidebar-link active" data-section="aprendices">
+                            <i class="bi bi-person-plus"></i> Registro de Aprendices
+                        </a>
+                        <a href="tomar-asistencia.html" class="sidebar-link " data-section="asistencia">
+                            <i class="bi bi-clipboard-check"></i> Tomar Asistencia
+                        </a>
+
+                    </div>
+                </div>
+                
+            </div>
+            
+                        <div class="col-lg-9 col-md-8">
+                <div id="aprendices" class="content-section active">
+                    <h3 class="section-title mb-4">
+                        <div class="feature-icon me-2">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        Registro de Aprendices
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-5 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Nuevo Aprendiz</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="aprendizForm">
+                                        <div class="mb-3">
+                                            <label for="documento" class="form-label">Documento de Identidad</label>
+                                            <input type="text" class="form-control" id="documento" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre Completo</label>
+                                            <input type="text" class="form-control" id="nombre" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="telefono" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="telefono">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="programa" class="form-label">Grado</label>
+                                            <select class="form-select" id="programa" required>
+                                                <option value="" selected disabled>Seleccionar Grado</option>
+                                                <option value="Primero">Primero</option>
+                                                <option value="Segundo">Segundo</option>
+                                                <option value="Tercero">Tercero</option>
+                                                <option value="Cuarto">Cuarto</option>
+                                                <option value="Quinto">Quinto</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="seccion" class="form-label">Sección</label>
+                                            <select class="form-select" id="seccion" required>
+                                                <option value="" selected disabled>Seleccionar Sección</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="estado" class="form-label">Estado</label>
+                                            <select class="form-select" id="estado" required>
+                                                <option value="Activo" selected>Activo</option>
+                                                <option value="Inactivo">Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-save"></i> Guardar Aprendiz
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Lista de Aprendices</h5>
+                                    <div>
+                                        <button class="btn btn-outline-primary btn-sm" id="importarAprendices">
+                                            <i class="bi bi-file-earmark-excel"></i> Importar
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm ms-2" id="exportarAprendices">
+                                            <i class="bi bi-download"></i> Exportar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="search-container">
+                                        <i class="bi bi-search search-icon"></i>
+                                        <input type="text" class="form-control" id="buscarAprendiz" placeholder="Buscar por nombre, documento o grado...">
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <select class="form-select form-select-sm me-2" id="filtroGrado">
+                                            <option value="">Todos los grados</option>
+                                            <option value="Primero">Primero</option>
+                                            <option value="Segundo">Segundo</option>
+                                            <option value="Tercero">Tercero</option>
+                                            <option value="Cuarto">Cuarto</option>
+                                            <option value="Quinto">Quinto</option>
+                                        </select>
+                                        <select class="form-select form-select-sm" id="filtroSeccion">
+                                            <option value="">Todas las secciones</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                        </select>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Documento</th>
+                                                    <th>Nombre</th>
+                                                    <th>Grado</th>
+                                                    <th>Sección</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="listaAprendices">
+                                                <tr>
+                                                    <td>1098765432</td>
+                                                    <td>Juan Pérez González</td>
+                                                    <td>Primero</td>
+                                                    <td>A</td>
+                                                    <td><span class="badge bg-success">Activo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btn-action" title="Editar">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger btn-action ms-1" title="Eliminar">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1087654321</td>
+                                                    <td>María Rodríguez López</td>
+                                                    <td>Segundo</td>
+                                                    <td>B</td>
+                                                    <td><span class="badge bg-success">Activo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btn-action" title="Editar">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger btn-action ms-1" title="Eliminar">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1076543210</td>
+                                                    <td>Carlos Sánchez Torres</td>
+                                                    <td>Tercero</td>
+                                                    <td>A</td>
+                                                    <td><span class="badge bg-success">Activo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btn-action" title="Editar">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger btn-action ms-1" title="Eliminar">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1065432109</td>
+                                                    <td>Ana Martínez Castro</td>
+                                                    <td>Cuarto</td>
+                                                    <td>C</td>
+                                                    <td><span class="badge bg-secondary">Inactivo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btn-action" title="Editar">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger btn-action ms-1" title="Eliminar">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1054321098</td>
+                                                    <td>Pedro González Ruiz</td>
+                                                    <td>Quinto</td>
+                                                    <td>D</td>
+                                                    <td><span class="badge bg-success">Activo</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary btn-action" title="Editar">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger btn-action ms-1" title="Eliminar">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Paginación -->
+                                    <nav aria-label="Paginación de aprendices">
+                                        <ul class="pagination justify-content-center mt-3">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Siguiente</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="modal fade" id="editarAprendizModal" tabindex="-1" aria-labelledby="editarAprendizModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editarAprendizModalLabel">Editar Aprendiz</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editarAprendizForm">
+                                        <div class="mb-3">
+                                            <label for="editDocumento" class="form-label">Documento de Identidad</label>
+                                            <input type="text" class="form-control" id="editDocumento" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editNombre" class="form-label">Nombre Completo</label>
+                                            <input type="text" class="form-control" id="editNombre" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editEmail" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="editEmail" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editTelefono" class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="editTelefono">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editGrado" class="form-label">Grado</label>
+                                            <select class="form-select" id="editGrado" required>
+                                                <option value="Primero">Primero</option>
+                                                <option value="Segundo">Segundo</option>
+                                                <option value="Tercero">Tercero</option>
+                                                <option value="Cuarto">Cuarto</option>
+                                                <option value="Quinto">Quinto</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editSeccion" class="form-label">Sección</label>
+                                            <select class="form-select" id="editSeccion" required>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editEstado" class="form-label">Estado</label>
+                                            <select class="form-select" id="editEstado" required>
+                                                <option value="Activo">Activo</option>
+                                                <option value="Inactivo">Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="guardarCambiosAprendiz">Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="modal fade" id="confirmarEliminarModal" tabindex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmarEliminarModalLabel">Confirmar Eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Está seguro que desea eliminar a este aprendiz? Esta acción no se puede deshacer.</p>
+                                    <p class="fw-bold" id="aprendizAEliminar"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-danger" id="confirmarEliminar">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="modal fade" id="importarAprendicesModal" tabindex="-1" aria-labelledby="importarAprendicesModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="importarAprendicesModalLabel">Importar Aprendices</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="archivoImportar" class="form-label">Seleccionar archivo Excel (.xlsx, .xls)</label>
+                                        <input class="form-control" type="file" id="archivoImportar" accept=".xlsx, .xls">
+                                    </div>
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i> El archivo debe contener las columnas: Documento, Nombre, Email, Teléfono, Grado, Sección y Estado.
+                                    </div>
+                                    <div class="mb-3">
+                                        <a href="#" class="text-decoration-none">Descargar plantilla de ejemplo</a>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="iniciarImportacion">Importar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    contentSections.forEach(s => s.classList.remove('active'));
+                    
+
+                    this.classList.add('active');
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+            
+
+            document.getElementById('importarAprendices')?.addEventListener('click', function() {
+                const importarModal = new bootstrap.Modal(document.getElementById('importarAprendicesModal'));
+                importarModal.show();
+            });
+            
+
+            document.querySelectorAll('.btn-outline-primary.btn-action').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const editarModal = new bootstrap.Modal(document.getElementById('editarAprendizModal'));
+                    editarModal.show();
+                });
+            });
+            
+            document.querySelectorAll('.btn-outline-danger.btn-action').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const confirmarModal = new bootstrap.Modal(document.getElementById('confirmarEliminarModal'));
+                    confirmarModal.show();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
